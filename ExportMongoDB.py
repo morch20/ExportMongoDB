@@ -1,7 +1,8 @@
-import math
+from math import ceil
 from pymongo import MongoClient
 from os import chdir, listdir
 from json import load
+from certifi import where
 
 
 class ExportMongoDBTo:
@@ -15,15 +16,20 @@ class ExportMongoDBTo:
         return self._uri
 
     def set_client(self, uri: str):
-        client = MongoClient(uri)
+
+        if self._uri_type == "Atlas":
+            client = MongoClient(uri, tlsCAFile=where())
+        else:
+            client = MongoClient(uri)
+
         print("Connection to", uri, "was successful")
         return client
 
-    def show_dbs(self, client) -> list:
-        return client.list_database_names()
+    def show_dbs(self) -> list:
+        return self._client.list_database_names()
 
     def show_collections(self, db) -> list:
-        return db.list_collection_names()
+        return self._client[db].list_collection_names()
 
     def __export_db(self, uri: str, db_name: str):
 
@@ -36,7 +42,7 @@ class ExportMongoDBTo:
         total = len(self.show_collections(import_db))
 
         for coll in self.show_collections(import_db):
-            ExportMongoDBTo.status_bar(total, i)
+            ExportMongoDBTo.__status_bar(total, i)
             i += 1
 
             for doc in import_db[coll].find():
@@ -53,7 +59,7 @@ class ExportMongoDBTo:
         total = import_db[coll].count_documents({})
 
         for doc in import_db[coll].find():
-            ExportMongoDBTo.status_bar(total, i)
+            ExportMongoDBTo.__status_bar(total, i)
             i += 1
             export_db[coll].insert_one(doc)
 
@@ -68,7 +74,7 @@ class ExportMongoDBTo:
         doc = import_db[from_coll].find_one(properties)
         export_db[to_coll].insert_one(doc)
 
-        ExportMongoDBTo.status_bar(10, 9)
+        ExportMongoDBTo.__status_bar(10, 9)
 
     def __export_db_folder_type_1(self, path: str, db_name: str):
 
@@ -78,7 +84,7 @@ class ExportMongoDBTo:
         i = 0
         total = len(listdir())
         for coll in listdir():
-            ExportMongoDBTo.status_bar(total, i)
+            ExportMongoDBTo.__status_bar(total, i)
             i += 1
 
             chdir(coll)
@@ -97,7 +103,7 @@ class ExportMongoDBTo:
         i = 0
         total = len(listdir())
         for coll in listdir():
-            ExportMongoDBTo.status_bar(total, i)
+            ExportMongoDBTo.__status_bar(total, i)
             i += 1
 
             with open(coll) as json_file:
@@ -112,7 +118,7 @@ class ExportMongoDBTo:
         i = 0
         total = len(listdir())
         for doc in listdir():
-            ExportMongoDBTo.status_bar(total, i)
+            ExportMongoDBTo.__status_bar(total, i)
             i += 1
 
             with open(doc) as json_file:
@@ -132,7 +138,7 @@ class ExportMongoDBTo:
             for doc in data:
                 db[coll].insert_one(data[doc])
 
-                ExportMongoDBTo.status_bar(total, i)
+                ExportMongoDBTo.__status_bar(total, i)
                 i += 1
 
     def __export_doc_folder_type_1(self, path: str, to_db: str, to_coll: str, name: str):
@@ -144,7 +150,7 @@ class ExportMongoDBTo:
             data = load(json_file)
             db[to_coll].insert_one(data)
 
-        ExportMongoDBTo.status_bar(10, 9)
+        ExportMongoDBTo.__status_bar(10, 9)
 
     def __export_doc_folder_type_2(self, path: str, to_db: str, to_coll: str, name: dict):
 
@@ -155,8 +161,7 @@ class ExportMongoDBTo:
             data = load(json_file)
             db[to_coll].insert_one(data[name["name"]])
 
-        ExportMongoDBTo.status_bar(10, 9)
-
+        ExportMongoDBTo.__status_bar(10, 9)
 
     # Export to Atlas from mongodb
     def export_database_from_mongodb(self, mongodb_uri: str, db_name: str):
@@ -299,10 +304,10 @@ class ExportMongoDBTo:
                             "path to JSON files")
 
     @staticmethod
-    def status_bar(total: int, i: int):
+    def __status_bar(total: int, i: int):
         i += 1
         dash = "---"
-        percent = math.ceil(total * 0.1)
+        percent = ceil(total * 0.1)
 
         if i == 1:
             print("Starting... --------------------|", end="\n   ")
@@ -315,7 +320,6 @@ class ExportMongoDBTo:
 
         if i == total:
             print("\nCompleted!! --------------------|")
-
 
     @staticmethod
     def validate__mongodb_uri(uri: str) -> bool:
