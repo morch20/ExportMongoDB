@@ -17,11 +17,12 @@ class ExportMongoDBTo:
 
     def set_client(self, uri: str):
 
-        if self._uri_type == "Atlas":
+        if self.__validate_uri_type(uri) == "Atlas":
             client = MongoClient(uri, tlsCAFile=where())
-        else:
-            client = MongoClient(uri)
+            print("Connection to", uri, "was successful")
+            return client
 
+        client = MongoClient(uri)
         print("Connection to", uri, "was successful")
         return client
 
@@ -39,9 +40,9 @@ class ExportMongoDBTo:
         export_db = self._client[db_name]
 
         i = 0
-        total = len(self.show_collections(import_db))
+        total = len(import_db.list_collection_names())
 
-        for coll in self.show_collections(import_db):
+        for coll in import_db.list_collection_names():
             ExportMongoDBTo.__status_bar(total, i)
             i += 1
 
