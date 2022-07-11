@@ -100,10 +100,10 @@ path = 'C:\\Users\\user\\Desktop\\myDatabaseFolder'
 # name of the database to export from
 database_name = 'myDataBaseFolder'
 
-# export folders structure 1
+# export database from folders structure 1
 export.export_database_from_folders(path, database_name)
 
-# export folders structure 2
+# export database from folders structure 2
 export.export_database_from_folders(path, database_name, 2)
 ```
 
@@ -147,7 +147,7 @@ to_db = 'myDataBase'
 # name of collection
 coll = 'myCollection'
 
-# export database
+# export collection
 export.export_collection_from_atlas(uri, from_db, to_db, coll)
 ```
 
@@ -167,7 +167,7 @@ to_db = 'myDataBaseInAtlas'
 # name of collection
 coll = 'myCollection'
 
-# export database
+# export collection
 export.export_collection_from_mongodb(uri, from_db, to_db, coll)
 ```
 
@@ -185,19 +185,121 @@ database_name = 'myDataBaseFolder'
 # name of the collection to export from
 collection_name = 'collection'
 
-# export folders structure 1
+# export collection from folders structure 1
 export.export_collection_from_folders(path, database_name, collection_name)
 
-# export folders structure 2
+# export collection from folders structure 2
 export.export_collection_from_folders(path, database_name, collection_name, 2)
 ```
 
 <br>
 
-<br>
-
 # Export Document
 ---
+
+Make sure ExportMongoDB file is in the same directory as your project and imported
+
+<br>
+
+First initialize a ExportMongoDBTo object
+
+```python
+from ExportMongoDB import ExportMongoDBTo
+
+# for MongoDB database in your local machine
+# uri = 'mongodb://localhost:27017' 
+
+# for MongoDB Atlas
+# uri = 'mongodb+srv://<username>:<password>@cluster...'
+
+# initialize object
+export = ExportMongoDBTo(uri)
+
+```
+<br>
+
+Export from Atlas
+
+```python
+# uri to Atlas to export from
+uri = 'mongodb+srv://<username>:<password>@cluster...'
+
+# name of the database to export from
+from_db = 'myDataBaseInAtlas'
+
+# name of the database exporting to
+to_db = 'myDataBase'
+
+# name of the collection exporting from
+from_coll = 'myCollection'
+
+# name of the collection exporting to
+to_coll = 'myNewCollection'
+
+# properties of the document to export
+properties = {'name': 'my document'}
+
+# export document
+export.export_document_from_atlas(uri, from_db, to_db, from_coll, to_coll, properties)
+```
+
+<br>
+Export from local machine
+
+```python
+# uri to Atlas to export from
+uri = 'mongodb://localhost:27017' 
+
+# name of the database to export from
+from_db = 'myDataBase'
+
+# name of the database exporting to
+to_db = 'myDataBaseInAtlas'
+
+# name of the collection exporting from
+from_coll = 'myCollection'
+
+# name of the collection exporting to
+to_coll = 'myNewCollection'
+
+# properties of the document to export
+properties = {'name': 'my document'}
+
+# export document
+export.export_document_from_mongodb(uri, from_db, to_db, from_coll, to_coll, properties)
+```
+
+<br>
+
+Export from JSON Folders
+- **'file' is required in name** for regular JSON structure 
+- **'file' and 'name' are required in name** for JSON structured type 2
+
+```python
+# Absolute path to folder representing a collection
+path = 'C:\\Users\\user\\Desktop\\myDatabaseFolder\\collection'
+
+# Absolute path to folder representing the database for JSON folders structure type 2
+path = 'C:\\Users\\user\\Desktop\\myDatabaseFolder'
+
+# name of the database exporting to
+to_db = 'myDataBase'
+
+# name of the collection exporting to
+to_coll = 'myCollection'
+
+# name of the document to export. 'file' is required
+name = {'file': 'my document'}
+
+# name of the document to export in JSON folders structure type 2. 'file' and 'name' are required
+name = {'file': 'collectionFile', 'name': 'document1'}
+
+# export folders structure 1
+export.export_document_from_folders(path, to_db, to_coll, name)
+
+# export folders structure 2
+export.export_document_from_folders(path, to_db, to_coll, name, 2)
+```
 
 <br>
 
