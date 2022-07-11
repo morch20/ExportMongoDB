@@ -312,7 +312,35 @@ The folder structure must be as it follows:
 
 folder(s) representing database(s) > folder(s) representing collection(s) > JSON file(s) representing document(s)
 
+<br>
 
+##### Folder(s) representing database(s)
+
+<img 
+    src="https://raw.githubusercontent.com/morch20/ExportMongoDB/assets/db.png"
+    alt= "Database folders"
+    style="width:50%;"
+/>
+
+<br>
+
+##### Folder(s) representing collection(s)
+
+<img 
+    src="https://raw.githubusercontent.com/morch20/ExportMongoDB/assets/coll1.png"
+    alt= "Collections folders"
+    style="width:50%;"
+/>
+
+<br>
+
+##### JSON file(s) representing document(s)
+
+<img 
+    src="https://raw.githubusercontent.com/morch20/ExportMongoDB/assets/doc1.png"
+    alt= "Documents files"
+    style="width:50%;"
+/>
 
 <br>
 
@@ -322,6 +350,32 @@ The folder structure must be as it follows:
 
 folder(s) representing database(s) > JSON file(s) representing collection(s) > JSON object(s) representing document(s)
 
+<br>
+
+##### Folder(s) representing database(s)
+
+<img 
+    src="https://raw.githubusercontent.com/morch20/ExportMongoDB/assets/db.png"
+    alt= "Database folders"
+    style="width:50%;"
+/>
 
 <br>
 
+##### JSON file(s) representing collection(s)
+
+<img 
+    src="https://raw.githubusercontent.com/morch20/ExportMongoDB/assets/coll2.png"
+    alt= "Collections files"
+    style="width:50%;"
+/>
+
+<br>
+
+##### JSON object(s) representing document(s)
+
+<img 
+    src="https://raw.githubusercontent.com/morch20/ExportMongoDB/assets/doc2.png"
+    alt= "Documents"
+    style="width:50%;"
+/>
