@@ -306,5 +306,22 @@ export.export_document_from_folders(path, to_db, to_coll, name, 2)
 # JSON Folders Structure
 ---
 
+#### JSON Folders Regular Structure
+
+The folder structure must be as it follows:
+
+folder(s) representing database(s) > folder(s) representing collection(s) > JSON file(s) representing document(s)
+
+
+
+<br>
+
+#### JSON Folders Structure type 2
+
+The folder structure must be as it follows:  
+
+folder(s) representing database(s) > JSON file(s) representing collection(s) > JSON object(s) representing document(s)
+
+
 <br>
 
